@@ -13,3 +13,4 @@ for file in glob("./cogs/*.py"):
     cog = 'cogs.' + re.split('[\\/]',file)[-1][:-3]
     bot.load_extension(cog)
 
+bot.begin()

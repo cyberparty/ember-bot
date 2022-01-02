@@ -12,7 +12,7 @@ class Database():
         self.database.close()
         self.cursor.close()
 
-    async def __call__(self, sql, *args):
+    async def run_sql(self, sql, *args):
         await self.cursor.execute(sql, *args)
         await self.database.commit()
         res = await self.cursor.fetchall()

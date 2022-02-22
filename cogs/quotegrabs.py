@@ -26,20 +26,16 @@ class QuoteGrabs(commands.Cog):
 
                     ctx.send("Grabbed message.")
                     return True
-            await ctx.send("User has not send a recent message.")
+            await ctx.send("User has not sent a recent message.")
             return False
     
     async def quote(self, ctx) -> bool:
-        if ctx.message.author == ctx.message.mentions[0]:
-            ctx.send("You cannot grab your own message.")
+        quote_res = await self.bot.database.run_sql("SELECT * FROM quotes WHERE user_id=? ORDER BY time_grabbed ASC LIMIT 1", (ctx.message.mentions[0],))
+        if quote_res is None:
+            ctx.send("User has no quotes.")
             return False
         else:
-            quote_res = await self.bot.database.run_sql("SELECT * FROM quotes WHERE user_id=? ORDER BY time_grabbed ASC LIMIT 1", (ctx.message.mentions[0],))
-            if quote_res is None:
-                ctx.send("User has no quotes.")
-                return False
-            else:
-                ctx.send(quote_res[1])
+            ctx.send(quote_res[1])
 
 
     
